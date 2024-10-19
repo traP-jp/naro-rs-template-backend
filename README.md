@@ -1,2 +1,2 @@
-# naro-template-backend
-Webエンジニアになろう講習会 バックエンドテンプレート
+# naro-rs-template-backend
+Webエンジニアになろう講習会 in Rust バックエンドテンプレート
