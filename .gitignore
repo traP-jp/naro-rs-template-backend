@@ -20,4 +20,11 @@
 # Go workspace file
 go.work
 
+<<<<<<< Updated upstream
 .tool-versions
+=======
+# Added by cargo
+
+/target
+.env
+>>>>>>> Stashed changes
