@@ -7,7 +7,7 @@ pub mod country;
 
 #[derive(Clone)]
 pub struct Repository {
-    pub pool: MySqlPool,
+    pool: MySqlPool,
     //session_store: MySqlSessionStore,
 }
 

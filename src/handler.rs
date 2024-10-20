@@ -11,7 +11,5 @@ pub fn make_router(app_state: Repository) -> Router {
         .route("/city/:city_name", get(country::get_city_handler))
         .route("/cities", post(country::post_city_handler));
 
-    Router::new()
-        .nest("/", city_router)
-        .with_state(app_state.pool)
+    Router::new().nest("/", city_router).with_state(app_state)
 }
