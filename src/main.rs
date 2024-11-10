@@ -11,8 +11,9 @@ async fn main() -> anyhow::Result<()> {
         .init();
 
     let app_state = repository::Repository::connect().await?;
+    app_state.migrate().await?;
     let app = handler::make_router(app_state).layer(TraceLayer::new_for_http());
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await?;
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080").await?;
 
     tracing::info!("listening on {}", listener.local_addr()?);
     axum::serve(listener, app).await.unwrap();

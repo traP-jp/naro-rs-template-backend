@@ -1,24 +1,35 @@
-//use async_sqlx_session::MySqlSessionStore;
+use async_sqlx_session::MySqlSessionStore;
 use sqlx::mysql::MySqlConnectOptions;
 use sqlx::mysql::MySqlPool;
 use std::env;
 
 pub mod country;
+pub mod users;
+pub mod users_session;
 
 #[derive(Clone)]
 pub struct Repository {
     pool: MySqlPool,
-    //session_store: MySqlSessionStore,
+    session_store: MySqlSessionStore,
 }
 
 impl Repository {
     pub async fn connect() -> anyhow::Result<Self> {
         let options = get_options()?;
         let pool = sqlx::MySqlPool::connect_with(options).await?;
+
+        let session_store =
+            MySqlSessionStore::from_client(pool.clone()).with_table_name("user_sessions");
+
         Ok(Self {
             pool,
-            //session_store: MySqlSessionStore::new(pool.clone()),
+            session_store,
         })
+    }
+
+    pub async fn migrate(&self) -> anyhow::Result<()> {
+        sqlx::migrate!("./migrations").run(&self.pool).await?;
+        Ok(())
     }
 }
 
