@@ -25,6 +25,14 @@ impl Repository {
         Ok(result)
     }
 
+    pub async fn get_user_name_by_id(&self, id: u64) -> sqlx::Result<String> {
+        let result = sqlx::query_scalar("SELECT username FROM users WHERE id = ?")
+            .bind(id)
+            .fetch_one(&self.pool)
+            .await?;
+        Ok(result)
+    }
+
     pub async fn save_user_password(&self, id: i32, password: String) -> anyhow::Result<()> {
         let hash = bcrypt::hash(password, bcrypt::DEFAULT_COST)?;
 
